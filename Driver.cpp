@@ -1,3 +1,5 @@
+#define __USE_EXCEPTIONS__ 0
+
 #include <stdlib.h> // for EXIT_{SUCCESS, FAILURE}
 #include <iostream>
 #include <string>
@@ -6,8 +8,6 @@
 #include <iterator> // for std::ostream_iterator
 
 #include "FileUtils.hpp"
-
-#define __USE_EXCEPTIONS__
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     }
 
     std::vector<std::string> lines;
-#ifdef __USE_EXCEPTIONS__
+#if __USE_EXCEPTIONS__
     try
     {
         lines = FileUtils::read_lines(argv[1]);
@@ -29,6 +29,11 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 #else
+    if (!FileUtils::read_lines(argv[1], lines))
+    {
+        std::cerr << "Failed to read lines from " << argv[1] << std::endl;
+        return EXIT_FAILURE;
+    }
 #endif // __USE_EXCEPTIONS__
 
     std::copy(lines.begin(), lines.end(),
