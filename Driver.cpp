@@ -8,6 +8,7 @@
 #include <iterator> // for std::ostream_iterator
 
 #include "FileUtils.hpp"
+#include "TextUtils.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -36,8 +37,21 @@ int main(int argc, char *argv[])
     }
 #endif // __USE_EXCEPTIONS__
 
-    std::copy(lines.begin(), lines.end(),
-              std::ostream_iterator<std::string>(std::cout, "\n"));
+    std::vector<std::string> tokens;
+    for (std::vector<std::string>::const_iterator cit = lines.begin(); cit != lines.end(); ++cit)
+    {
+        std::cout << "line: '" << *cit << "'" << std::endl;
+        TextUtils::split(*cit, tokens, " ");
+
+        std::cout << "tokens: ";
+        std::copy(tokens.begin(), tokens.end(),
+                  std::ostream_iterator<std::string>(std::cout, " >> "));
+        std::cout << std::endl;
+
+        std::string line = TextUtils::join(tokens, " ");
+        std::cout << "reconstituted line: '" << line << "'" 
+                  << std::endl << std::endl;
+    }
 
     return EXIT_SUCCESS;
 }
