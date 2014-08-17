@@ -83,7 +83,7 @@ dispatch(Node **head_ptr,
 }
 
 /* 
-    reads commands from stdin; writes results to stdout and errors to stderr.
+    read commands from stdin; log results to stdout and errors to stderr.
     sample usage: cat commands.txt  | ./slist > log.txt
 */
 int 
