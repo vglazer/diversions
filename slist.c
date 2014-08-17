@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BUFSIZE 1024
+#define MAX_LENGTH 1024
 
 /* singly-linked list node */
 typedef struct node 
@@ -12,7 +12,9 @@ typedef struct node
 } Node;
 
 /* insert a new node at the front of the list */
-Node *insert_front(Node *head, double value)
+Node *
+insert_front(Node *head, 
+                   double value)
 {
     Node *new_head = malloc(sizeof(Node));
     
@@ -23,11 +25,13 @@ Node *insert_front(Node *head, double value)
 }
 
 /*  node values to log */
-void print_list(Node *head, FILE *log)
+void 
+print_list(Node *head, 
+           FILE *log)
 {
     Node *curr;
 
-    fprintf(log, "list contents\n");
+    fprintf(log, "list contents:\n");
     for (curr = head; curr != NULL; curr = curr->next)
     {
         fprintf(log, "%.2f\n", curr->value);
@@ -35,32 +39,42 @@ void print_list(Node *head, FILE *log)
 }
 
 /* parse commands file and invoke appropriate function, logging the results */
-Node *dispatch(Node **head_ptr, FILE *commands, char delim, FILE *log)
+Node *
+dispatch(Node **head_ptr, 
+               char delim, 
+               FILE *commands, 
+               FILE *log,
+               FILE *errors)
 {
-    char buffer[BUFSIZE], *temp;
+    char line[MAX_LENGTH], *cursor;
     double value;
 
-    while (fgets(buffer, BUFSIZE, commands) != NULL)
+    while (fgets(line, MAX_LENGTH, commands) != NULL)
     {
-        for (temp = buffer; *temp != '\0' && *temp != delim; ++temp);
-        if (*temp == '\0')
+        /* look for the delimeter. if it's not there, the line is malformed */
+        for (cursor = line; *cursor != '\0' && *cursor != delim; ++cursor);
+        if (*cursor == '\0')
         {
-            fprintf(stderr, "no delimeter found; skipping %s", buffer);
+            fprintf(errors, "no delimeter found; skipping %s", line);
             continue;
         }
 
-        *temp = '\0';
-        ++temp;
+        /* break up the line into command followed by value */
+        *cursor = '\0';
+        ++cursor;
 
-        value = atof(temp);
-        if (!strcmp(buffer, "insert_front"))
+        /* extract value */
+        value = atof(cursor);
+
+        /* process command if we know how */
+        if (!strcmp(line, "insert_front"))
         {
             *head_ptr = insert_front(*head_ptr, value);
             fprintf(log, "insert_front -> %f\n", value);
         }
         else
         {
-            fprintf(stderr, "unknown command; skipping %s\n", buffer);
+            fprintf(errors, "unknown command; skipping %s\n", line);
             continue;
         }
     }
@@ -72,14 +86,15 @@ Node *dispatch(Node **head_ptr, FILE *commands, char delim, FILE *log)
     reads commands from stdin; writes results to stdout and errors to stderr.
     sample usage: cat commands.txt  | ./slist > log.txt
 */
-int main(int argc, char const *argv[])
+int 
+main(int argc, 
+     char const *argv[])
 {
-    Node *head;
+    Node *head = NULL;
+    FILE *commands = stdin, *log = stdout, *errors = stderr;
 
-    head = NULL;
-    head = dispatch(&head, stdin, ',', stdout);
-
-    print_list(head, stdout);
+    head = dispatch(&head, ',', commands, log, errors);
+    print_list(head, log);
 
     return EXIT_SUCCESS;
 }
