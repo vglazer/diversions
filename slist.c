@@ -20,26 +20,45 @@ insert_front(Node * head, double value)
     return new_head;
 }
 
+/* print node values to stddout */
 void
-print_list(Node * head)
+print_list(FILE * output_stream, Node * head)
 {
     Node * curr;
 
     for (curr = head; curr != NULL; curr = curr->next)
     {
-        printf("%.2f\n", curr->value);
+        fprintf(output_stream, "%.2f\n", curr->value);
     }
 }
 
 /* driver */
 int main(int argc, char const * argv[])
 {
-    Node * head; 
+    Node * head;
+    FILE * output_stream;
 
-    head = insert_front(0, 5.0);
+    /* output goes to stdout by default, but user can specify file */
+    if (argc > 2)
+    {
+        printf("usage: %s <input file> [output file]\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+    else if (argc == 2)
+    {
+        output_stream = fopen(argv[1], "w");
+    }
+    else
+    {
+        output_stream = stdout;
+    }
+
+    head = insert_front(NULL, 5.0);
     head = insert_front(head, 7.2);
 
-    print_list(head);
+    print_list(output_stream, head);
 
-    return 0;
+    fclose(output_stream);
+
+    return EXIT_SUCCESS;
 }
