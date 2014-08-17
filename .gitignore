@@ -3,3 +3,5 @@ Driver.o
 FileUtils.o
 TextUtils.o
 slist
+commands.txt
+log.txt
