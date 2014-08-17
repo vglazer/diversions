@@ -2,4 +2,4 @@ Driver
 Driver.o
 FileUtils.o
 TextUtils.o
-list_stack
+slist
