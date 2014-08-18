@@ -13,7 +13,8 @@ typedef struct node
 
 /* remove and return the last element of the list */
 Node *
-pop_back(Node *head, Node **back)
+pop_back(Node *head, 
+         Node **back)
 {
     Node *curr;
 
@@ -39,7 +40,8 @@ pop_back(Node *head, Node **back)
 
 /* remove and return the first element of the list */
 Node *
-pop_front(Node *head, Node **front)
+pop_front(Node *head, 
+          Node **front)
 {
     if (head != NULL)
     {
@@ -57,7 +59,7 @@ pop_front(Node *head, Node **front)
 /* insert a new node at the front of the list */
 Node *
 push_front(Node *head, 
-                   double value)
+           double value)
 {
     Node *new_head = malloc(sizeof(Node));
     
