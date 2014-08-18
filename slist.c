@@ -18,19 +18,24 @@ pop_back(Node *head,
 {
     Node *curr;
 
+    /* empty list */
     if (head == NULL)
     {
         *back = NULL;
         return head;
     }
+    /* singleton list */
     else if (head->next == NULL)
     {
         *back = head;
         return NULL;
     }
+    /* at least two elements */
     else
     {
+        /* need to find the element just before the last element */
         for (curr = head; curr->next->next != NULL; curr = curr->next);
+
         *back = curr->next;
         curr->next = NULL;
 
@@ -43,11 +48,13 @@ Node *
 pop_front(Node *head, 
           Node **front)
 {
+    /* at least one element */
     if (head != NULL)
     {
         *front = head;
         head = head->next;
     }
+    /* empty list */
     else
     {
         *front = NULL;
