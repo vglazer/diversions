@@ -13,7 +13,7 @@ typedef struct node
 
 /* insert a new node at the front of the list */
 Node *
-insert_front(Node *head, 
+push_front(Node *head, 
                    double value)
 {
     Node *new_head = malloc(sizeof(Node));
@@ -22,6 +22,35 @@ insert_front(Node *head,
     new_head->next = head;
 
     return new_head;
+}
+
+/* insert a new node at the back of the list */
+Node *
+push_back(Node *head, 
+          double value)
+{
+    Node *curr;
+
+    /* handle empty lists separately, since head will change */
+    if (head == NULL)
+    {
+        curr = malloc(sizeof(Node));
+        
+        curr->value = value;
+        curr->next = NULL;
+
+        return curr;
+    }
+
+    /* locate the end of the list */
+    for (curr = head; curr->next != NULL; curr = curr->next);
+    
+    /* insert specified value */
+    curr->next = malloc(sizeof(Node));
+    curr->next->value = value;
+    curr->next->next = NULL;
+
+    return head;
 }
 
 /*  node values to log */
@@ -67,10 +96,15 @@ dispatch(Node **head_ptr,
         value = atof(cursor);
 
         /* process command if we know how */
-        if (!strcmp(line, "insert_front"))
+        if (!strcmp(line, "push_front"))
         {
-            *head_ptr = insert_front(*head_ptr, value);
-            fprintf(log, "insert_front -> %f\n", value);
+            *head_ptr = push_front(*head_ptr, value);
+            fprintf(log, "push_front -> %.2f\n", value);
+        }
+        else if (!strcmp(line, "push_back"))
+        {
+            *head_ptr = push_back(*head_ptr, value);
+            fprintf(log, "push_back -> %.2f\n", value);
         }
         else
         {
