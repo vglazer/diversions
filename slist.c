@@ -11,6 +11,49 @@ typedef struct node
     struct node *next;
 } Node;
 
+/* remove and return the last element of the list */
+Node *
+pop_back(Node *head, Node **back)
+{
+    Node *curr;
+
+    if (head == NULL)
+    {
+        *back = NULL;
+        return head;
+    }
+    else if (head->next == NULL)
+    {
+        *back = head;
+        return NULL;
+    }
+    else
+    {
+        for (curr = head; curr->next->next != NULL; curr = curr->next);
+        *back = curr->next;
+        curr->next = NULL;
+
+        return head;
+    }
+}
+
+/* remove and return the first element of the list */
+Node *
+pop_front(Node *head, Node **front)
+{
+    if (head != NULL)
+    {
+        *front = head;
+        head = head->next;
+    }
+    else
+    {
+        *front = NULL;
+    }
+
+    return head;
+}
+
 /* insert a new node at the front of the list */
 Node *
 push_front(Node *head, 
@@ -76,6 +119,7 @@ dispatch(Node **head_ptr,
                FILE *errors)
 {
     char line[MAX_LENGTH], *cursor;
+    Node *node;
     double value;
 
     while (fgets(line, MAX_LENGTH, commands) != NULL)
@@ -105,6 +149,37 @@ dispatch(Node **head_ptr,
         {
             *head_ptr = push_back(*head_ptr, value);
             fprintf(log, "push_back -> %.2f\n", value);
+        }
+        else if (!strcmp(line, "pop_front"))
+        {
+            *head_ptr = pop_front(*head_ptr, &node);
+            if (node == NULL)
+            {
+                fprintf(log, "pop_front -> N/A\n");
+            }
+            else
+            {
+                fprintf(log, "pop_front -> %.2f\n", node->value);
+            }
+
+            /* reclaim memory */
+            free(node);
+        }
+        else if (!strcmp(line, "pop_back"))
+        {
+            node = NULL;
+            *head_ptr = pop_back(*head_ptr, &node);
+            if (node == NULL)
+            {
+                fprintf(log, "pop_back -> N/A\n");
+            }
+            else
+            {
+                fprintf(log, "pop_back -> %.2f\n", node->value);
+            }
+
+            /* reclaim memory */
+            free(node);
         }
         else
         {

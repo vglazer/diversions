@@ -1,6 +1,10 @@
+pop_back,
+pop_front,
 push_back,9.1
 push_front,5.0
 insert_back,2.0
 push_front,7.2
+pop_back,
+pop_front,
 push_back,8.1
 push_front
