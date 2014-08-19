@@ -11,7 +11,24 @@ typedef struct node
     struct node *next;
 } Node;
 
-/* remove and return the last element of the list */
+/* returns 1 if the list contains the specified value, -1 otherwise */
+int
+contains(Node *head, double value)
+{
+    Node *curr;
+
+    for (curr = head; curr != NULL; curr = curr->next)
+    {
+        if (curr->value == value)
+        {
+            return 1;
+        }
+    }
+
+    return -1;
+}
+
+/* removes and returns the last element of the list */
 Node *
 pop_back(Node *head, 
          Node **back)
@@ -43,7 +60,7 @@ pop_back(Node *head,
     }
 }
 
-/* remove and return the first element of the list */
+/* removes and returns the first element of the list */
 Node *
 pop_front(Node *head, 
           Node **front)
@@ -63,7 +80,7 @@ pop_front(Node *head,
     return head;
 }
 
-/* insert a new node at the front of the list */
+/* inserts a new node at the front of the list */
 Node *
 push_front(Node *head, 
            double value)
@@ -76,7 +93,7 @@ push_front(Node *head,
     return new_head;
 }
 
-/* insert a new node at the back of the list */
+/* inserts a new node at the back of the list */
 Node *
 push_back(Node *head, 
           double value)
@@ -120,7 +137,7 @@ print_list(Node *head,
     }
 }
 
-/* parse commands file and invoke appropriate function, logging the results */
+/* parses commands file and invokes appropriate function, logging the results */
 Node *
 dispatch(Node **head_ptr, 
                char delim, 
@@ -131,6 +148,7 @@ dispatch(Node **head_ptr,
     char line[MAX_LENGTH], *cursor;
     Node *node;
     double value;
+    int found;
 
     while (fgets(line, MAX_LENGTH, commands) != NULL)
     {
@@ -177,7 +195,6 @@ dispatch(Node **head_ptr,
         }
         else if (!strcmp(line, "pop_back"))
         {
-            node = NULL;
             *head_ptr = pop_back(*head_ptr, &node);
             if (node == NULL)
             {
@@ -191,6 +208,11 @@ dispatch(Node **head_ptr,
             /* reclaim memory */
             free(node);
         }
+        else if (!strcmp(line, "contains"))
+        {
+            found = contains(*head_ptr, value);
+            fprintf(log, "contains -> %.2f : %d\n", value, found);
+        }
         else
         {
             fprintf(errors, "unknown command; skipping %s\n", line);
@@ -202,7 +224,7 @@ dispatch(Node **head_ptr,
 }
 
 /* 
-    read commands from stdin; log results to stdout and errors to stderr.
+    reads commands from stdin; logs results to stdout and errors to stderr.
     sample usage: cat commands.txt  | ./slist > log.txt
 */
 int 
