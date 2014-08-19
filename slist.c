@@ -99,6 +99,7 @@ push_back(Node *head,
     
     /* insert specified value */
     curr->next = malloc(sizeof(Node));
+
     curr->next->value = value;
     curr->next->next = NULL;
 
