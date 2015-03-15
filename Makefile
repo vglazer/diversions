@@ -1,21 +1,19 @@
 CPP=g++
 CPPFLAGS=-Wall -Werror -ansi -pedantic -O2
 LDFLAGS=-lm
-EXECUTABLE=Driver
+EXECUTABLES=text_search Driver
+DRIVER_OBJECTS=Driver.o FileUtils.o TextUtils.o
 
-all: $(EXECUTABLE)
+all: $(EXECUTABLES)
 
-$(EXECUTABLE): Driver.o FileUtils.o TextUtils.o
-	$(CPP) $(LDFLAGS) *.o -o $@
+text_search: text_search.o
+	$(CPP) $(LDFLAGS) text_search.o -o $@
 
-FileUtils.o: FileUtils.cpp FileUtils.hpp
-	$(CPP) $(CPPFLAGS) -c FileUtils.cpp -o $@
+Driver: $(DRIVER_OBJECTS)
+	$(CPP) $(LDFLAGS) $(DRIVER_OBJECTS) -o $@
 
-TextUtils.o: TextUtils.cpp TextUtils.hpp
-	$(CPP) $(CPPFLAGS) -c TextUtils.cpp -o $@
-
-Driver.o: Driver.cpp FileUtils.hpp TextUtils.hpp
-	$(CPP) $(CPPFLAGS) -c Driver.cpp -o $@
+%.o: %.cpp 
+	$(CPP) -c $(CPPFLAGS) $< -o $@
 
 clean:
-	rm -rf *.o $(EXECUTABLE)
+	rm -rf *.o $(EXECUTABLES)
