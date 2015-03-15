@@ -1,7 +1,7 @@
 CPP=g++
-CPPFLAGS=-Wall -Werror -ansi -pedantic -O2
+CPPFLAGS=-Wall -Werror -ansi -pedantic -O2 -std=c++11
 LDFLAGS=-lm
-EXECUTABLES=text_search Driver
+EXECUTABLES=text_search Driver num_search
 DRIVER_OBJECTS=Driver.o FileUtils.o TextUtils.o
 
 all: $(EXECUTABLES)
