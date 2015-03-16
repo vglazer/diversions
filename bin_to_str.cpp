@@ -24,14 +24,8 @@ int main(int argc, char *argv[])
     }
 
     double num;
-    for (;;)
+    for (; ifs; ifs.read(reinterpret_cast<char*>(&num), sizeof(num)))
     {
-        ifs.read(reinterpret_cast<char*>(&num), sizeof(num));
-        if (!ifs)
-        {
-            break;
-        }
-        
         ofs << num << " ";
     }
     ofs << std::endl;
