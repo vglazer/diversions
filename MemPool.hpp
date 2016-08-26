@@ -1,5 +1,6 @@
 #include <vector>
 #include <list>
+#include <iostream>
 
 #include <stddef.h> // for size_t
 
@@ -51,6 +52,9 @@ class MemPool
 		// Allocate a new block of memory chunks on the heap 
 		void allocateBlock()
 		{
+            std::cerr << "allocating new block of size " << _blockSize << "..." 
+                      << std::endl;
+
 			// Allocate a block of raw memory
 			T* block = static_cast<T*>(operator new(_blockSize*sizeof(T))); 
 
