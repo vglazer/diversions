@@ -1,5 +1,5 @@
 CXX=g++
-CPPFLAGS=-Wall -Werror -ansi -pedantic -O2 -std=c++11
+CPPFLAGS=-Wall -Werror -ansi -pedantic -O2 -std=c++11 -march=native
 LDFLAGS=-lm
 EXECUTABLES=text_search Driver num_search str_to_bin bin_to_str \
 			reverse_string
