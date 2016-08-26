@@ -4,3 +4,10 @@ FileUtils.o
 TextUtils.o
 slist
 log.txt
+mem_pool
+num_search
+reverse_string
+bin_to_str
+str_to_bin
+text_search
+*.swp
