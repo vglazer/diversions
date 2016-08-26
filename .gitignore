@@ -1,7 +1,4 @@
 Driver
-Driver.o
-FileUtils.o
-TextUtils.o
 slist
 log.txt
 mem_pool
@@ -10,4 +7,5 @@ reverse_string
 bin_to_str
 str_to_bin
 text_search
+*.o
 *.swp
